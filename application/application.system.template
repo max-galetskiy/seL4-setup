@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+
+#if defined(PLATFORM_cva6)
+    <memory_region name="uart" size="0x1000" phys_addr="0x10000000" />
+#elif defined(PLATFORM_qemu_riscv)
+    <memory_region name="uart" size="0x1000" phys_addr="0x10000000" />
+#endif
+
+    <memory_region name="request_type" size="0x1000" />
+    <memory_region name="request_first_parameter" size="0x1000" />
+    <memory_region name="request_second_parameter" size="0x1000" />
+    <memory_region name="server_output" size="0x1000" />
+
+    <protection_domain name="server" priority="254">
+        <program_image path="server.elf" />
+        <map mr="request_type" vaddr="0x4100000" perms="r" setvar_vaddr="request_type" />
+        <map mr="request_first_parameter" vaddr="0x4200000" perms="r" setvar_vaddr="request_first_parameter" />
+        <map mr="request_second_parameter" vaddr="0x4300000" perms="r" setvar_vaddr="request_second_parameter" />
+        <map mr="server_output" vaddr="0x4400000" perms="rw" setvar_vaddr="server_output" />
+    </protection_domain>
+    
+    <protection_domain name="client" priority="0">
+        <program_image path="client.elf" />
+
+#if defined(PLATFORM_cva6)
+        <irq id="0" irq="1"/>
+#elif defined(PLATFORM_qemu_riscv)
+        <irq id="0" irq="10"/>
+#endif
+        <map mr="uart" vaddr="0x4000000" perms="rw" cached="false" setvar_vaddr="uart_base_vaddr" />
+        <map mr="request_type" vaddr="0x4100000" perms="rw" setvar_vaddr="request_type" />        
+        <map mr="request_first_parameter" vaddr="0x4200000" perms="rw" setvar_vaddr="request_first_parameter" />
+        <map mr="request_second_parameter" vaddr="0x4300000" perms="rw" setvar_vaddr="request_second_parameter" />
+        <map mr="server_output" vaddr="0x4400000" perms="r" setvar_vaddr="server_output" />
+    </protection_domain>
+    
+    <channel>
+        <end pd="server" id="1" />
+        <end pd="client" id="2" />
+    </channel>
+    
+</system>
