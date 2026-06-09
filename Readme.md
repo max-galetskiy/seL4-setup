@@ -128,7 +128,7 @@ $(IMAGE_FILE): $(addprefix $(BUILD_DIR)/, $(IMAGES)) $(SYSTEM_FILE)
 $(MICROKIT_TOOL) $(SYSTEM_FILE) --search-path $(BUILD_DIR) --board $(BOARD) --config $(MICROKIT_CONFIG) -o $(IMAGE_FILE) -r $(REPORT_FILE)
 ```
 
-Note: The `Makefile` in our code and **Appendix D** is a bit more complicated than this one. It expects you to call it via:
+Note: The `Makefile` in our code is a bit more complicated than this one. It expects you to call it via:
 ```
 make PLATFORM=qemu-riscv
 ```
