@@ -48,8 +48,6 @@ For an application on the SeL4 Microkit, you will need the following:
 * at least one `.c` file for each process (called "protection domain" in SeL4) with it's code. Every file has to define the `init()` and `notified(...)` functions
 * a `Makefile` to build
 
-For concrete examples of the first two see **Appendix D**.
-
 The following is a sample Makefile for two protection domains (`server.c` and `client.c`) and a system file called `application.system` all intended to run on QEMU:
 
 ```
